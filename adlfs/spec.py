@@ -801,13 +801,6 @@ class AzureBlobFileSystem(AsyncFileSystem):
         for p, d, f in zip([path], [dirs], [files]):
             yield p, d, f
 
-    def walk(self, path: str, maxdepth=None, **kwargs):
-        import pdb;pdb.set_trace()
-        result = utils.sync_generator(self.loop, self._async_walk, path, maxdepth)
-        result = result[0]
-        path, dirs, files = result[0], result[1], result[2]
-        yield path, dirs, files
-
     async def _async_walk(self, path: str, maxdepth=None, **kwargs):
         """ Return all files belows path
 
@@ -828,6 +821,7 @@ class AzureBlobFileSystem(AsyncFileSystem):
 
         **kwargs are passed to ``ls``
         """
+        # 
         path = self._strip_protocol(path)
         full_dirs = {}
         dirs = {}
